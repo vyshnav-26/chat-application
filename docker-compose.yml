@@ -9,8 +9,9 @@ services:
     # initialized postgres_data volume.
     #
     # Credential Rotation:
-    #   To rotate passwords/users on an active volume, run SQL commands directly via psql, e.g.:
-    #     docker compose exec postgres psql -U <current_user> -d <db> -c "ALTER USER <user> WITH PASSWORD 'new_password';"
+    #   To rotate passwords/users on an active volume, run interactive psql and use \password:
+    #     docker compose exec -it postgres psql -U <current_user> -d <db>
+    #     \password <user>
     #   and update your environment variables accordingly.
     #   Note: pg_isready used in the healthcheck only checks server connectivity, not credentials.
     #
@@ -28,7 +29,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-chat_db}"]
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "${POSTGRES_USER:-postgres}", "-d", "${POSTGRES_DB:-chat_db}"]
       interval: 5s
       timeout: 5s
       retries: 5
