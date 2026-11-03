@@ -21,15 +21,15 @@ services:
     #     docker compose down -v
     #     docker compose up -d
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-chat_db}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:?set POSTGRES_DB in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
     ports:
       - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "${POSTGRES_USER:-postgres}", "-d", "${POSTGRES_DB:-chat_db}"]
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "${POSTGRES_USER:?set POSTGRES_USER in .env}", "-d", "${POSTGRES_DB:?set POSTGRES_DB in .env}"]
       interval: 5s
       timeout: 5s
       retries: 5
