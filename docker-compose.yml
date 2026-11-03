@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: chat-app-postgres
+    restart: unless-stopped
+    # NOTE on database configuration and credentials:
+    # POSTGRES_DB, POSTGRES_USER, and POSTGRES_PASSWORD are used only during initial database
+    # cluster creation. Changing these environment variables does NOT update an existing,
+    # initialized postgres_data volume.
+    #
+    # Credential Rotation:
+    #   To rotate passwords/users on an active volume, run interactive psql and use \password:
+    #     docker compose exec -it postgres psql -U <current_user> -d <db>
+    #     \password <user>
+    #   and update your environment variables accordingly.
+    #   Note: pg_isready used in the healthcheck only checks server connectivity, not credentials.
+    #
+    # Resetting the Database:
+    #   WARNING: Resetting will permanently destroy all existing database data stored in postgres_data.
+    #   To completely reset the database with new initial credentials:
+    #     docker compose down -v
+    #     docker compose up -d
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-chat_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "${POSTGRES_USER:-postgres}", "-d", "${POSTGRES_DB:-chat_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
