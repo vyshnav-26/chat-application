@@ -6,6 +6,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestPropertySource;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -14,6 +15,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @org.springframework.test.context.ActiveProfiles("test")
+@TestPropertySource(properties = {
+		"spring.datasource.url=jdbc:h2:mem:chat_test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1",
+		"spring.datasource.username=sa",
+		"spring.datasource.password=",
+		"spring.datasource.driver-class-name=org.h2.Driver",
+		"spring.flyway.enabled=false",
+		"app.jwt.secret=test-secret-that-is-at-least-32-bytes-long"
+})
 class BackendApplicationTests {
 
 	@Autowired
