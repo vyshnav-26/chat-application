@@ -79,7 +79,7 @@ $env:SPRING_DATASOURCE_URL = "jdbc:postgresql://localhost:$($env:POSTGRES_PORT)/
 ./mvnw.cmd spring-boot:run
 ```
 
-Spring Boot starts on `http://localhost:8080` and Flyway applies pending migrations during startup. Swagger UI is available at `http://localhost:8080/swagger-ui/index.html`.
+Spring Boot starts on `http://localhost:8080` and Flyway applies pending migrations during startup.
 
 ### 4. Start the frontend
 
@@ -108,7 +108,7 @@ See `.env.example` and `frontend/.env.example`. The backend requires a PostgreSQ
 
 ## Tests and build
 
-- Backend: start PostgreSQL and export the variables from `.env`, then run `./mvnw test` from `backend`.
+- Backend: run `./mvnw test` from `backend`. The test profile uses an in-memory database and does not require PostgreSQL or exported `.env` variables.
 - Frontend tests: run `npm run test:run` from `frontend`.
 - Frontend production build: run `npm run build` from `frontend`.
 

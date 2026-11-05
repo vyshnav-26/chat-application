@@ -13,16 +13,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/** Authenticates REST requests that include a valid bearer JWT. */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserRepository users;
 
+    /** Creates the filter with token validation and account lookup services. */
     public JwtAuthenticationFilter(JwtService jwtService, UserRepository users) {
         this.jwtService = jwtService;
         this.users = users;
     }
 
+    /** Resolves a bearer token to the authenticated account for the current request. */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
