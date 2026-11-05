@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		"spring.datasource.username=sa",
 		"spring.datasource.password=",
 		"spring.datasource.driver-class-name=org.h2.Driver",
-		"spring.flyway.enabled=false",
 		"app.jwt.secret=test-secret-that-is-at-least-32-bytes-long"
 })
 class BackendApplicationTests {

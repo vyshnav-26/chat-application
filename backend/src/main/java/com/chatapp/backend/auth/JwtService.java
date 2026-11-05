@@ -21,7 +21,12 @@ public class JwtService {
     /** Creates a JWT service from a secret and token lifetime in seconds. */
     public JwtService(@Value("${app.jwt.secret}") String secret,
                       @Value("${app.jwt.expiration-seconds:3600}") long expirationSeconds) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
+        if (secretBytes.length < 32 || secret.startsWith("replace-with-")) {
+            throw new IllegalStateException(
+                    "app.jwt.secret (JWT_SECRET) must be a non-placeholder value of at least 32 bytes");
+        }
+        this.key = Keys.hmacShaKeyFor(secretBytes);
         this.expirationSeconds = expirationSeconds;
     }
 

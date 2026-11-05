@@ -31,13 +31,10 @@ Run the checks that cover the files you changed, and report the commands and res
 
 ```sh
 # Backend
-cd backend
-./mvnw test
+(cd backend && ./mvnw test)
 
 # Frontend
-cd frontend
-npm run test:run
-npm run build
+(cd frontend && npm run test:run && npm run build)
 ```
 
 The backend test profile uses an in-memory database. For database migration changes, also verify the migrations against a clean PostgreSQL database when available.

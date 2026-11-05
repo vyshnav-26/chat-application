@@ -26,4 +26,12 @@ class JwtServiceTest {
 
         assertThat(service.isValid(token)).isFalse();
     }
+
+    @Test
+    void rejectsPlaceholderOrShortSigningSecrets() {
+        assertThatThrownBy(() -> new JwtService("replace-with-a-random-secret-at-least-32-bytes-long", 3600))
+                .isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> new JwtService("too-short", 3600))
+                .isInstanceOf(IllegalStateException.class);
+    }
 }
